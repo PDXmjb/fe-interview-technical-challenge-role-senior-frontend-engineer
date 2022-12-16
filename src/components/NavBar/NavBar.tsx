@@ -38,6 +38,7 @@ function NavBar({ links }: TNavBar) {
           to={href}
           color={location.pathname === href ? '#FFF' : '#888'}
           underline="hover"
+          aria-current={location.pathname === href ? 'page' : undefined}
           sx={{
             cursor: 'pointer',
             '&:not(:last-of-type)': {
