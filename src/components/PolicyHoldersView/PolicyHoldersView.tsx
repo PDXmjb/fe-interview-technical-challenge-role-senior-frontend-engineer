@@ -112,7 +112,7 @@ function PolicyHoldersView() {
           <InfoTable
             sx={{ marginBottom: '35px' }}
             key={index}
-            header="Policy Holder:"
+            header="Policyholder:"
             rows={row}
           ></InfoTable>
         );
