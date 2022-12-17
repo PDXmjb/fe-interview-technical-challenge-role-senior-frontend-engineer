@@ -16,7 +16,7 @@ function Layout({ children, onFooterClick }: TLayout) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        minHeight: '100vh',
       }}
     >
       <Box
@@ -24,7 +24,6 @@ function Layout({ children, onFooterClick }: TLayout) {
         sx={{
           display: 'flex',
           flexGrow: '1',
-          height: '100%',
         }}
       >
         <NavBar links={links} />
