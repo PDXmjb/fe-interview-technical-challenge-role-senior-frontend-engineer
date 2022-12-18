@@ -4,51 +4,25 @@ import { useQuery } from 'react-query';
 import InfoTable from '../InfoTable';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { getPolicyHolderKeys, Row } from './policy-helper';
 
-interface PolicyHolder {
-  name: string;
-  age: string;
-  phoneNumber: string;
-  isPrimary: boolean;
+const FAKE_POST_DATA = {
+  name: 'Anabelle Policyholder',
+  age: 52,
+  phoneNumber: '1-555-203-2111',
+  isPrimary: false,
   address: {
-    line1: string;
-    line2: string;
-    city: string;
-    state: string;
-    postalCode: string;
-  };
-}
-
-interface Row {
-  key: string;
-  value: string;
-}
-
-function getPolicyHolderKeys(policyHolders: PolicyHolder[]): Row[][] {
-  return policyHolders.map((policyHolder: PolicyHolder) => {
-    const { name, age, phoneNumber, isPrimary, address } = policyHolder;
-
-    return [
-      { key: 'Name', value: name },
-      { key: 'Age', value: age },
-      {
-        key: 'Address',
-        value: address.line2
-          ? `${address.line1} ${address.line2}, ${address.city} ${address.state} ${address.postalCode}`
-          : `${address.line1}, ${address.city} ${address.state} ${address.postalCode}`,
-      },
-      { key: 'Phone number', value: phoneNumber },
-      {
-        key: 'Primary policyholder?',
-        value: isPrimary ? 'Yes' : 'No',
-      },
-    ];
-  });
-}
+    line1: '123 Fake St',
+    city: 'Nuremburg',
+    state: 'Switzerland',
+    postalCode: '0822112',
+  },
+};
 
 function PolicyHoldersView() {
   const [policyData, setPolicyData] = useState();
   const [addPolicy, setAddPolicy] = useState(false);
+
   const { isLoading, error, data } = useQuery(
     'repoData',
     async () =>
@@ -68,18 +42,7 @@ function PolicyHoldersView() {
       axios
         .post(
           'https://fe-interview-technical-challenge-api-git-main-sure.vercel.app/api/policyholders',
-          {
-            name: 'Anabelle Policyholder',
-            age: 52,
-            phoneNumber: '1-555-203-2111',
-            isPrimary: false,
-            address: {
-              line1: '123 Fake St',
-              city: 'Nuremburg',
-              state: 'Switzerland',
-              postalCode: '0822112',
-            },
-          }
+          FAKE_POST_DATA
         )
         .then((response) => setPolicyData(response.data.policyHolders));
     }
@@ -118,12 +81,7 @@ function PolicyHoldersView() {
         );
       })}
 
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        onClick={handleAddPolicyHolder}
-      >
+      <Button color="primary" size="large" onClick={handleAddPolicyHolder}>
         Add a new policy
       </Button>
     </Box>
@@ -131,3 +89,22 @@ function PolicyHoldersView() {
 }
 
 export default PolicyHoldersView;
+
+/*
+ Future Todos before shipping this code:
+ 1) Translations/localization/a11y -
+   - Order translations for all string values in the above.
+   - Configure addresses and phone numbers based on localization libraries.
+   - Confirm the page follows a correct flow based on a11y standards for keyboard and screenreader use. Add missing aura- elements as needed.
+ 2) Error handling
+   - Add error handling for POST to more gracefully handle error states.
+ 3) Styles
+   - Hide VIEW CHALLENGES button and make the ADD A NEW POLICY more prominent.
+   - Hide "Policyholder:" header being shown for additional policyholders.
+   - Consider virtualizing/paginating the list of policyholders if it could potentially be long.
+ 4) SOLID principles
+   - Consider moving GET/POST into custom hooks in order to reduce the responsibility of the PolicyHoldersView to view logic only.
+ 5) Testing
+   - Add unit test coverage for the PolicyHoldersView
+   - Add test coverage for failed GET/POST.
+*/
