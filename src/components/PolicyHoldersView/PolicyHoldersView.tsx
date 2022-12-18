@@ -95,7 +95,7 @@ export default PolicyHoldersView;
  1) Translations/localization/a11y -
    - Order translations for all string values in the above.
    - Configure addresses and phone numbers based on localization libraries.
-   - Confirm the page follows a correct flow based on a11y standards for keyboard and screenreader use. Add missing aura- elements as needed.
+   - Confirm the page follows a correct flow based on a11y standards for keyboard and screenreader use. Add missing aria- elements as needed.
  2) Error handling
    - Add error handling for POST to more gracefully handle error states.
  3) Styles
